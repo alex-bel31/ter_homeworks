@@ -2,7 +2,9 @@
 
 ## Задание 1
 
-1. Screen terraform version
+<center>
+<img src="img/terraform-ver.JPG">
+</center>
 
 2. Согласно приведенному .gitignore секреты допустимо хранить в `personal.auto.tfvars`.
 
@@ -18,7 +20,7 @@
 
     В строке 31 также используется неверное имя ресурса ресурс `"random_password" "random_string_FAKE"`, который не объявлен и неподдерживаемый атрибут `resulT`.
 
-    Исправленный франмент кода:
+5. Исправленный франмент кода:
 
     ```bash
     resource "docker_image" "nginx"{
@@ -36,9 +38,17 @@
     }
     }
     ```
+    <center>
+    <img src="img/docker-ps-t5.JPG">
+    </center>
+
 6. Ключ `auto-approve` пропускает интерактивное утверждения плана перед применением. Может быть полезным для автоматизации процесов развертывания инфраструктуры и везде, где нет возможности интерактива.
 
-7. Созданные ресурсы были удалены командой `terraform destroy`. Содержимое файла **terraform.tfstate**:
+    <center>
+    <img src="img/auto-approve-t6.JPG">
+    </center> 
+
+7. Созданные ресурсы были уничтожены командой `terraform destroy`. Содержимое файла **terraform.tfstate**:
 
     ```json
     {
@@ -57,6 +67,6 @@
 
 ## Задание 2*
 
-Итоговый код **задания 2** в файле [main.tf]()
+Итоговый код **задания 2** в файле [main.tf](https://github.com/alex-bel31/ter_homeworks/blob/main/ter-01-intro/main.tf)
 
 
