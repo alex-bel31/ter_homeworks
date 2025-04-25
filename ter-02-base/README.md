@@ -51,7 +51,6 @@ resource "yandex_compute_instance" "platform" {
 ## Задание 4 
 
 Был создан блок `output "instances_info"` содержащий: **instance_name, external_ip, fqdn** для каждой из ВМ.
-
 Тип данных для `instances_info` - **map(map())**, где каждый элемент описывает ВМ и её атрибуты.
 
 <center>
