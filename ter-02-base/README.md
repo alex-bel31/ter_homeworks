@@ -22,7 +22,7 @@
 
 Заменены все хардкод-значения для ресурсов `yandex_compute_image` и `yandex_compute_instance` на отдельные переменные:
 
-```s
+```hcl
 data "yandex_compute_image" "ubuntu" {
   family = var.vm_web_image_family
 }
@@ -37,7 +37,7 @@ resource "yandex_compute_instance" "platform" {
 ```
 
 <center>
-    <img src="img/terraform-plan-t2.JPG">
+  <img src="img/terraform-plan-t2.JPG">
 </center>
 
 ## Задание 3 
@@ -66,7 +66,7 @@ resource "yandex_compute_instance" "platform" {
 
 В блоке `locals` создал локальные переменные **vm_web_name** и **vm_db_name** с использованием интерполяции значений из списка переменной **var.vm_name**.
 
-```s
+```hcl
 locals {
   vm_web_name = "netology-develop-platform-${var.vm_name[0]}"
   vm_db_name  = "netology-develop-platform-${var.vm_name[1]}"
@@ -77,7 +77,7 @@ locals {
 
 Задаем перменную `vms_resources`, которая представляет собой **map(object)**, где ключами являются имена виртуальных машин, а значениями объекты с параметрами конфигурации ВМ.
 
-```s
+```hcl
 variable "vms_resources" {
   type = map(object({
     cores         = number
@@ -102,7 +102,7 @@ variable "vms_resources" {
 
 Задаем переменную `vms_metadata` типа **map(string)** с двумя ключами: **"serial-port-enable"** и **"ssh-keys"**:
 
-```c
+```hcl
 variable "vms_metadata" {
   type = map(string)
   default = {
@@ -129,7 +129,7 @@ variable "vms_metadata" {
 
 Выражение в **terraform console**, которое позволит вычленить строку **"ssh -o 'StrictHostKeyChecking=no' ubuntu@62.84.124.117"** выглядит следующим образом:
 
-```c
+```hcl
 var.test[0].dev1[0]
 ```
 
