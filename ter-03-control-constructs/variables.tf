@@ -11,12 +11,13 @@ variable "folder_id" {
 
 variable "default_zone" {
   type        = string
-  default     = "ru-central1-a"
   description = "https://cloud.yandex.ru/docs/overview/concepts/geo-scope"
 }
+
+## -----------------network vars-----------------
+
 variable "default_cidr" {
   type        = list(string)
-  default     = ["10.0.1.0/24"]
   description = "https://cloud.yandex.ru/docs/vpc/operations/subnet-create"
 }
 
@@ -24,4 +25,33 @@ variable "vpc_name" {
   type        = string
   default     = "develop"
   description = "VPC network&subnet name"
+}
+
+## -----------------vm vars-----------------
+
+locals {
+  public_key = "ubuntu:${file("~/.ssh/yavm.pub")}"
+}
+
+variable "vms_resources" {
+  type = object({
+    cores         = number
+    memory        = number
+    core_fraction = number
+    platform_id   = string
+    image_family  = string
+  })
+  description = "Resource configuration for count_vm"
+  sensitive   = true
+}
+
+variable "each_vm" {
+  type = list(object({
+    vm_name       = string,
+    cpu           = number,
+    ram           = number,
+    core_fraction = number
+    disk_volume   = number
+  }))
+  description = "Resource configuration for each_vm"
 }
