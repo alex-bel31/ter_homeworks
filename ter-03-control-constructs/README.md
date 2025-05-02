@@ -41,7 +41,7 @@ locals {
 
 ## Задание 3
 
-С помощью `resource "yandex_compute_disk" "disks" {}` и и мета-аргумента **count** в файле [disk_vm.tf](https://github.com/alex-bel31/ter_homeworks/blob/terraform-03/ter-03-control-constructs/disk_vm.tf) было создано 3 одинаковых диска:
+С помощью `resource "yandex_compute_disk" "disks" {}` и мета-аргумента **count** в файле [disk_vm.tf](https://github.com/alex-bel31/ter_homeworks/blob/terraform-03/ter-03-control-constructs/disk_vm.tf) было создано 3 одинаковых диска:
 
 ```hcl
 resource "yandex_compute_disk" "disks" {
@@ -53,7 +53,7 @@ resource "yandex_compute_disk" "disks" {
 }
 ```
 
-В этом же файле создана одиночная ВМ **storage** к которой подключены раннее созаднные диски с использованием блока `dynamic "secondary_disk" {}`,  мета-аргумента **for_each** и аргумента **auto_delete = true** для автоматического удаления при удалении экземпляра:
+В этом же файле создана одиночная ВМ **storage**, к которой подключены диски с использованием блока `dynamic "secondary_disk" {}`,  мета-аргумента **for_each** и аргумента **auto_delete = true** для автоматического удаления при удалении экземпляра:
 
 ```hcl
 dynamic "secondary_disk" {
@@ -71,7 +71,7 @@ dynamic "secondary_disk" {
 
 ## Задание 4
 
-В файле [ansible.tf](https://github.com/alex-bel31/ter_homeworks/blob/terraform-03/ter-03-control-constructs/ansible.tf) создана локальная перменная, которая содержит информациб о трех группах ресурсов ВМ:
+В файле [ansible.tf](https://github.com/alex-bel31/ter_homeworks/blob/terraform-03/ter-03-control-constructs/ansible.tf) создана локальная переменная, которая содержит информациб о трех группах ресурсов:
 
 ```hcl
 locals {
@@ -88,7 +88,7 @@ locals {
 
 ## Задание 5*
 
-В файле [output.tf](https://github.com/alex-bel31/ter_homeworks/blob/terraform-03/ter-03-control-constructs/output.tf) с помощью объядинения двух списков и итерацией по **count и for_each** группам ВМ, выводится информация в виде списка словарей.
+В файле [output.tf](https://github.com/alex-bel31/ter_homeworks/blob/terraform-03/ter-03-control-constructs/output.tf) с помощью объединения двух списков и итерацией по **count и for_each** группам ВМ, выводится информация в виде списка словарей.
 
 <center>
   <img src="img/ter-output-t5.JPG">
@@ -106,9 +106,9 @@ merge(
 ```
 
 - Функция `merge()` объединяет два **map**
-- `slice(local.vpc.subnet_ids, 0, 2)` - Берёт срез списка от индекса 0 до 2
-- `slice(local.vpc.subnet_ids, 3, length(local.vpc.subnet_ids))` - Берёт все элементы после удаляемого 
-- `concat()` - Объединяет два списка
+- `slice(local.vpc.subnet_ids, 0, 2)` - берёт срез списка от индекса 0 до 2
+- `slice(local.vpc.subnet_ids, 3, length(local.vpc.subnet_ids))` - берёт все элементы после удаляемого 
+- `concat()` - объединяет два списка
 
 ## Задание 8*
 
