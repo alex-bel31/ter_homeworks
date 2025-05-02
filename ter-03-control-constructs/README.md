@@ -70,3 +70,20 @@ dynamic "secondary_disk" {
 </center>
 
 ## Задание 4
+
+В файле [ansible.tf]() создана локальная перменная, которая содержит информациб о трех группах ресурсов ВМ:
+
+```hcl
+locals {
+    web = yandex_compute_instance.count_vm
+    db = values(yandex_compute_instance.for_each_vm)
+    storage = [yandex_compute_instance.storage]
+}
+```
+Ресурс `"local_file" "ansible_inventory"` создает файл с инвентарем, используя шаблон [hosts.tftpl](), который итерируется по **web, db** и **storage** группам подставляя данные о ВМ. И записывает в файл **hosts.ini**.
+
+<center>
+  <img src="img/ansible-inventory-t4.JPG">
+</center>
+
+## Задание 5*

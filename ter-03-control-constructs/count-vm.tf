@@ -3,7 +3,7 @@ data "yandex_compute_image" "ubuntu" {
 }
 
 resource "yandex_compute_instance" "count_vm" {
-  
+
   depends_on  = [yandex_compute_instance.for_each_vm]
   count       = 2
   name        = "web-${count.index + 1}"

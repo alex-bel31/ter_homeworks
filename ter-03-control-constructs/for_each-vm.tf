@@ -14,7 +14,7 @@ resource "yandex_compute_instance" "for_each_vm" {
     memory        = each.value.ram
     core_fraction = each.value.core_fraction
   }
-  
+
   boot_disk {
     initialize_params {
       image_id = data.yandex_compute_image.ubuntu.image_id
@@ -27,8 +27,8 @@ resource "yandex_compute_instance" "for_each_vm" {
   }
 
   network_interface {
-    subnet_id          = yandex_vpc_subnet.develop.id
-    nat                = true
+    subnet_id = yandex_vpc_subnet.develop.id
+    nat       = true
   }
 
   metadata = {

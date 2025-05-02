@@ -1,9 +1,9 @@
 resource "yandex_compute_disk" "disks" {
   count = 3
-  name     = "${var.disks.storage.name}-${count.index+1}"
-  type     = var.disks.storage.type
-  zone     = var.default_zone
-  size = var.disks.storage.size
+  name  = "${var.disks.storage.name}-${count.index + 1}"
+  type  = var.disks.storage.type
+  zone  = var.default_zone
+  size  = var.disks.storage.size
 }
 
 resource "yandex_compute_instance" "storage" {
@@ -17,7 +17,7 @@ resource "yandex_compute_instance" "storage" {
     memory        = var.vms_resources.memory
     core_fraction = var.vms_resources.core_fraction
   }
-  
+
   boot_disk {
     initialize_params {
       image_id = data.yandex_compute_image.ubuntu.image_id
@@ -29,8 +29,8 @@ resource "yandex_compute_instance" "storage" {
   }
 
   network_interface {
-    subnet_id          = yandex_vpc_subnet.develop.id
-    nat                = true
+    subnet_id = yandex_vpc_subnet.develop.id
+    nat       = true
   }
 
   metadata = {
@@ -41,7 +41,7 @@ resource "yandex_compute_instance" "storage" {
     for_each = yandex_compute_disk.disks
 
     content {
-      disk_id = secondary_disk.value.id
+      disk_id     = secondary_disk.value.id
       auto_delete = true
     }
   }
