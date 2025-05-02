@@ -2,11 +2,11 @@
 
 ## Задание 1
 
-*скриншот входящих правил «Группы безопасности» в ЛК Yandex Cloud .*
-
 <center>
   <img src="img/security-group-t1.JPG">
 </center>
+
+*скриншот входящих правил «Группы безопасности» в ЛК Yandex Cloud .*
 
 ## Задание 2
 
@@ -35,6 +35,10 @@ locals {
   vm_map = { for vm in var.each_vm : vm.vm_name => vm }
 }
 ```
+<center>
+  <img src="img/count-for-t2.JPG">
+</center>
+
 ## Задание 3
 
 
