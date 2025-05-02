@@ -10,7 +10,7 @@
 
 ## Задание 2
 
-В файле [count-vm.tf]() был создан ресурс для создания двух одинаковых ВМ с использованием мета-аргумента **count loop**. Имена ВМ были заданы следующим образом:
+В файле [count-vm.tf](https://github.com/alex-bel31/ter_homeworks/blob/terraform-03/ter-03-control-constructs/count-vm.tf) был создан ресурс для создания двух одинаковых ВМ с использованием мета-аргумента **count loop**. Имена ВМ были заданы следующим образом:
 
 ```hcl
   count       = 2
@@ -25,7 +25,7 @@
     security_group_ids = [yandex_vpc_security_group.example.id]
   }
 ```
-В файле [for_each-vm.tf]() был создан ресурс для создания двух ВМ разных по cpu/ram/disk_volume с использованием мета-аргумента **for_each loop**.
+В файле [for_each-vm.tf](https://github.com/alex-bel31/ter_homeworks/blob/terraform-03/ter-03-control-constructs/for_each-vm.tf) был создан ресурс для создания двух ВМ разных по cpu/ram/disk_volume с использованием мета-аргумента **for_each loop**.
 Была задана переменная ``type = list(object()`` для параметров ВМ.
 
 Так как **for_each** принимает в качестве указателя количества экземпляров только **set** или **map**, было выполнено преобразоване списка в **map** с помощью `locals.vm_map`:
@@ -41,7 +41,7 @@ locals {
 
 ## Задание 3
 
-С помощью `resource "yandex_compute_disk" "disks" {}` и и мета-аргумента **count** в файле [disk_vm.tf]() было создано 3 одинаковых диска:
+С помощью `resource "yandex_compute_disk" "disks" {}` и и мета-аргумента **count** в файле [disk_vm.tf](https://github.com/alex-bel31/ter_homeworks/blob/terraform-03/ter-03-control-constructs/disk_vm.tf) было создано 3 одинаковых диска:
 
 ```hcl
 resource "yandex_compute_disk" "disks" {
@@ -71,7 +71,7 @@ dynamic "secondary_disk" {
 
 ## Задание 4
 
-В файле [ansible.tf]() создана локальная перменная, которая содержит информациб о трех группах ресурсов ВМ:
+В файле [ansible.tf](https://github.com/alex-bel31/ter_homeworks/blob/terraform-03/ter-03-control-constructs/ansible.tf) создана локальная перменная, которая содержит информациб о трех группах ресурсов ВМ:
 
 ```hcl
 locals {
@@ -80,10 +80,60 @@ locals {
     storage = [yandex_compute_instance.storage]
 }
 ```
-Ресурс `"local_file" "ansible_inventory"` создает файл с инвентарем, используя шаблон [hosts.tftpl](), который итерируется по **web, db** и **storage** группам подставляя данные о ВМ. И записывает в файл **hosts.ini**.
+Ресурс `"local_file" "ansible_inventory"` создает файл с инвентарем, используя шаблон [hosts.tftpl](https://github.com/alex-bel31/ter_homeworks/blob/terraform-03/ter-03-control-constructs/hosts.tftpl), который итерируется по **web, db** и **storage** группам подставляя данные о ВМ. И записывает в файл **hosts.ini**.
 
 <center>
   <img src="img/ansible-inventory-t4.JPG">
 </center>
 
 ## Задание 5*
+
+В файле [output.tf](https://github.com/alex-bel31/ter_homeworks/blob/terraform-03/ter-03-control-constructs/output.tf) с помощью объядинения двух списков и итерацией по **count и for_each** группам ВМ, выводится информация в виде списка словарей.
+
+<center>
+  <img src="img/ter-output-t5.JPG">
+</center>
+
+## Задание 7*
+
+```hcl
+merge(
+  { network_id = local.vpc.network_id },
+  {
+    subnet_ids   = concat(slice(local.vpc.subnet_ids, 0, 2), slice(local.vpc.subnet_ids, 3, length(local.vpc.subnet_ids))),
+    subnet_zones = concat(slice(local.vpc.subnet_zones, 0, 2), slice(local.vpc.subnet_zones, 3, length(local.vpc.subnet_zones)))
+  })
+```
+
+- Функция `merge()` объединяет два **map**
+- `slice(local.vpc.subnet_ids, 0, 2)` - Берёт срез списка от индекса 0 до 2
+- `slice(local.vpc.subnet_ids, 3, length(local.vpc.subnet_ids))` - Берёт все элементы после удаляемого 
+- `concat()` - Объединяет два списка
+
+## Задание 8*
+
+Ошибка в **tpl-шаблоне** на 3 строке - отсутствует закрывающая скобка выражения для **ansible_host**:
+
+- >Call to function "templatefile" failed: ./hosts.tftpl:3,85-86: Invalid character;
+
+Ошибка в **tpl-шаблоне** на 3 строке - лишняя закрывающая скобка выражения для **platform_id** и лишний пробел:
+
+- >Call to function "templatefile" failed: ./hosts.tftpl:3,89-105: Invalid index
+
+## Задание 9*
+
+**Список от "rc01" до "rc99"** 
+
+```hcl
+[for i in range(1, 100) : format("rc%02d", i)]
+```
+
+C помощью `range()` создаем диапазон чисел, а функцией `format()` задаем строковый шаблон **rc%02d**
+
+**Список от "rc01" до "rc96", пропуская все номера, заканчивающиеся на "0","7", "8", "9", за исключением "rc19"** 
+
+```hcl
+[for i in range(1, 97) : format("rc%02d", i) if !(i % 10 == 0 || i % 10 == 7 || i % 10 == 8 || i % 10 == 9 && i != 19)]
+```
+
+К предыдущему варинату добавляется условия, где остатком от деления находится последня цифра выводимого числа.
