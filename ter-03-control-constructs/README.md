@@ -41,5 +41,32 @@ locals {
 
 ## Задание 3
 
+С помощью `resource "yandex_compute_disk" "disks" {}` и и мета-аргумента **count** в файле [disk_vm.tf]() было создано 3 одинаковых диска:
 
+```hcl
+resource "yandex_compute_disk" "disks" {
+  count = 3
+  name     = "${var.disks.storage.name}-${count.index+1}"
+  type     = var.disks.storage.type
+  zone     = var.default_zone
+  size = var.disks.storage.size
+}
+```
 
+В этом же файле создана одиночная ВМ **storage** к которой подключены раннее созаднные диски с использованием блока `dynamic "secondary_disk" {}`,  мета-аргумента **for_each** и аргумента **auto_delete = true** для автоматического удаления при удалении экземпляра:
+
+```hcl
+dynamic "secondary_disk" {
+  for_each = yandex_compute_disk.disks
+
+  content {
+    disk_id = secondary_disk.value.id
+    auto_delete = true
+  }
+}
+```
+<center>
+  <img src="img/storage-vm-t3.JPG">
+</center>
+
+## Задание 4

@@ -55,3 +55,12 @@ variable "each_vm" {
   }))
   description = "Resource configuration for each_vm"
 }
+
+variable "disks" {
+  type = map(object({
+    name = string
+    type = string
+    size = number
+  }))
+  description = "Options for virtual disks"
+}
