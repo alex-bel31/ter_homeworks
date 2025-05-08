@@ -1,7 +1,7 @@
 # Домашнее задание к занятию «Продвинутые методы работы с Terraform»
 
 ## Задание 1
-Развернуто 2 ВМ с помощью двух вызовов одного и того же remote-модуля. Использованы **labels** для указания принадлежности к проектам **marketing** и **analytics**. Так же используется **local** переменная для подстановки публичного ключа в шаблон [cloud-init.yml]():
+Развернуты 2 ВМ с помощью двух вызовов одного и того же remote-модуля. Использованы **labels** для указания принадлежности к проектам **marketing** и **analytics**. Так же используется **local** переменная для подстановки публичного ключа в шаблон [cloud-init.yml](https://github.com/alex-bel31/ter_homeworks/blob/terraform-04/ter-04-advanced/cloud-init.yml):
 
 ```hcl
 locals {
@@ -34,7 +34,7 @@ data "template_file" "cloudinit" {
 
 ## Задание 2
 
-Локальный модуль **vpc** описан в [./modules/vpc](). Документация к модулю оформлена с использование **terraform-docs** - [doc.md]():
+Локальный модуль **vpc** описан в [./modules/vpc](https://github.com/alex-bel31/ter_homeworks/tree/terraform-04/ter-04-advanced/modules/vpc). Документация к модулю оформлена с использование **terraform-docs** - [doc.md](https://github.com/alex-bel31/ter_homeworks/blob/terraform-04/ter-04-advanced/modules/vpc/doc.md):
 
 ```docker
 docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.20.0 markdown /terraform-docs > doc.md
@@ -58,7 +58,7 @@ docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-
 
 Модуль использует **for_each** для итерации по списку объектов **subnets**(list(object)), где каждая подсеть создаётся в своей зоне с указанным **cidr**. Название каждой подсети формируется динамически.
 
-Локальный модуль **vpc-all-zones** описан в [./modules/vpc-all-zones](). 
+Локальный модуль **vpc-all-zones** описан в [./modules/vpc-all-zones](https://github.com/alex-bel31/ter_homeworks/tree/terraform-04/ter-04-advanced/modules/vpc-all-zones). 
 
 <center>
   <img src="img/t4.JPG">
@@ -70,7 +70,7 @@ docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-
 
 ## Задание 5*
 
-В [модуле для создание кластера Mysql]() динамически генерируются блоки `"host"` в зависимости от логической переменной **ha**. Если `var.ha == true,` создаются два хоста **[0, 1]**, иначе один хост **[0]**:
+В [модуле для создания кластера Mysql](https://github.com/alex-bel31/ter_homeworks/tree/terraform-04/ter-04-advanced/modules/mdb-mysql-cluster) динамически генерируются блоки `"host"` в зависимости от логической переменной **ha**. Если `var.ha == true,` создаются два хоста **[0, 1]**, иначе один хост **[0]**:
 ```hcl
 dynamic "host" {
     for_each = var.ha ? [0, 1] : [0]
@@ -80,7 +80,7 @@ dynamic "host" {
       subnet_id = var.subnets[host.key].subnet_id
 ```
 
-Модуль для создания пользователей и БД находится в [./modules/mysql-db-user](). Вызов модулей в файле [mysql_cluster.tf]().
+Модуль для создания пользователей и БД находится в [./modules/mysql-db-user](https://github.com/alex-bel31/ter_homeworks/tree/terraform-04/ter-04-advanced/modules/mysql-db-user). Вызов модулей в файле [mysql_cluster.tf](https://github.com/alex-bel31/ter_homeworks/blob/terraform-04/ter-04-advanced/mysql_cluster.tf).
 
 **PS:** реализацию подсмотрел у Terraform Yandex Cloud modules (terraform-yc-mysql)
 
@@ -98,11 +98,11 @@ dynamic "host" {
 
 ## Задание 6*
 
-Вызов модуля в файле [simple-bucket.tf]()
+Вызов модуля в файле [simple-bucket.tf](https://github.com/alex-bel31/ter_homeworks/blob/terraform-04/ter-04-advanced/simple-bucket.tf)
 
 ## Задание 7*
 
-C использование ресурса `"vault_generic_secret" "example"` были переданы секреты по пути **secret/config** в json формате:
+C использованием ресурса `"vault_generic_secret" "example"` были переданы секреты в **Vault** по пути **secret/config** в json формате:
 
 ```hcl
 resource "vault_generic_secret" "example" {
