@@ -25,7 +25,7 @@ variable "vpc_name" {
 }
 
 locals {
-  public_key = "${file("~/.ssh/yavm.pub")}"
+  public_key = file("~/.ssh/yavm.pub")
 }
 
 variable "ssh_username" {
@@ -34,8 +34,8 @@ variable "ssh_username" {
 
 variable "subnets" {
   type = map(object({
-    zone  = string
-    cidr  = string
+    zone = string
+    cidr = string
   }))
   description = "List of subnets with zones and CIDR"
 }
