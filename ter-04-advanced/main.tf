@@ -17,8 +17,8 @@ module "vpc_dev" {
 }
 
 module "test-vm" {
-  source                 = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
-  env_name               = "develop"
+  source                 = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=711baa1"
+  env_name               = "production"
   network_id             = module.vpc_prod.subnet_info[0].id
   subnet_zones           = [for subnet in module.vpc_prod.subnet_info : subnet.zone]
   subnet_ids             = [for subnet in module.vpc_prod.subnet_info : subnet.id]
@@ -34,15 +34,15 @@ module "test-vm" {
   }
 
   metadata = {
-    user-data          = data.template_file.cloudinit.rendered
+    user-data          = local.cloudinit
     serial-port-enable = 1
   }
 
 }
 
 module "example-vm" {
-  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
-  env_name       = "stage"
+  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=711baa1"
+  env_name       = "develop"
   network_id     = module.vpc_dev.subnet_info[0].id
   subnet_zones   = [for subnet in module.vpc_dev.subnet_info : subnet.zone]
   subnet_ids     = [for subnet in module.vpc_dev.subnet_info : subnet.id]
@@ -56,15 +56,14 @@ module "example-vm" {
   }
 
   metadata = {
-    user-data          = data.template_file.cloudinit.rendered
+    user-data          = local.cloudinit
     serial-port-enable = 1
   }
 }
 
-data "template_file" "cloudinit" {
-  template = file("./cloud-init.yml")
-  vars = {
+locals {
+  cloudinit = templatefile("${path.module}/cloud-init.yml", {
     username       = var.ssh_username
-    ssh_public_key = local.public_key
-  }
+    ssh_public_key = file("~/.ssh/yavm.pub")
+  })
 }
