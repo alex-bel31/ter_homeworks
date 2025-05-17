@@ -8,4 +8,4 @@
 
 4. [Домашнее задание к занятию «Продвинутые методы работы с Terraform»](https://github.com/alex-bel31/ter_homeworks/tree/terraform-04/ter-04-advanced)
 
-5. [Домашнее задание к занятию «Использование Terraform в команде»](https://github.com/alex-bel31/ter_homeworks/tree/terraform-04/ter-05-teamwork)
+5. [Домашнее задание к занятию «Использование Terraform в команде»](https://github.com/alex-bel31/ter_homeworks/tree/main/ter-05-teamwork)
