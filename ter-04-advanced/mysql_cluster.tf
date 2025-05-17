@@ -10,8 +10,7 @@ module "vpc" {
 module "mysql" {
   source = "./modules/mdb-mysql-cluster"
   name   = "example"
-  ha     = true
-
+  ha     = false
   network_id = module.vpc.subnet_info[0].network_id
 
   subnets = [
